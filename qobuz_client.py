@@ -401,14 +401,9 @@ class QobuzClient:
         """
         existing_items = self.get_playlist_tracks(playlist_id)
         existing_track_ids = [item["id"] for item in existing_items if "id" in item]
-        existing_playlist_track_ids = [
-            item["playlist_track_id"]
-            for item in existing_items
-            if "playlist_track_id" in item
-        ]
 
         self.add_tracks_to_playlist(playlist_id, track_ids)
 
-        if existing_playlist_track_ids:
-            self.delete_tracks_from_playlist(playlist_id, existing_playlist_track_ids)
+        if existing_track_ids:
+            self.delete_tracks_from_playlist(playlist_id, existing_track_ids)
             self.add_tracks_to_playlist(playlist_id, existing_track_ids)
