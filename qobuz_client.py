@@ -341,11 +341,18 @@ class QobuzClient:
             track_title = self._normalize(track.title)
             qobuz_artist_parts = self._split_artists(self._normalize(track.artist))
 
+            track_album = self._normalize(track.album)
             title_match = self._substr_match(title_n, track_title)
-            artist_match = any(
-                self._substr_match(source_part, qobuz_part)
-                for source_part in source_artist_parts
-                for qobuz_part in qobuz_artist_parts
+            artist_match = (
+                any(
+                    self._substr_match(source_part, qobuz_part)
+                    for source_part in source_artist_parts
+                    for qobuz_part in qobuz_artist_parts
+                )
+                or any(
+                    self._substr_match(source_part, track_album)
+                    for source_part in source_artist_parts
+                )
             )
 
             if title_match and artist_match:
